@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ignite — Event Ticketing</title>
+<title>Ignite — Sun & Soul Pool Party</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root {
-  --fire: #FF3D00;
-  --fire2: #FF6D00;
-  --ember: #FF9E00;
+  --primary: #7B2FFF;
+  --primary2: #FF2F7B;
+  --accent: #00E5FF;
   --bg: #060608;
   --surface: #0e0e12;
   --surface2: #16161c;
@@ -26,252 +26,249 @@
 html{scroll-behavior:smooth;}
 body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-/* ── NOISE OVERLAY ── */
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.35;}
 
-/* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 40px;background:rgba(6,6,8,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-.nav-logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--fire),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px;}
-.nav-logo span{font-weight:400;opacity:0.5;font-size:11px;letter-spacing:3px;display:block;margin-top:-4px;-webkit-text-fill-color:var(--text-dim);}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 32px;background:rgba(6,6,8,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px;}
+.nav-logo span{font-weight:400;font-size:10px;letter-spacing:3px;display:block;margin-top:-4px;-webkit-text-fill-color:var(--text-dim);}
 .nav-tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:4px;}
-.nav-tab{padding:8px 20px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text-dim);transition:all 0.2s;font-family:'Instrument Sans',sans-serif;letter-spacing:0.5px;}
-.nav-tab.active{background:linear-gradient(135deg,var(--fire),var(--fire2));color:#fff;}
-.nav-badge{display:none;background:var(--fire);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-left:4px;}
+.nav-tab{padding:8px 18px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text-dim);transition:all 0.2s;font-family:'Instrument Sans',sans-serif;letter-spacing:0.3px;}
+.nav-tab.active{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;}
+.nav-badge{display:none;background:var(--primary2);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-left:4px;}
 
-/* ── VIEWS ── */
-.view{display:none;padding-top:75px;min-height:100vh;}
+.view{display:none;padding-top:70px;min-height:100vh;}
 .view.active{display:block;}
 
-/* ══════════════════
-   BUYER — HERO
-══════════════════ */
+/* ── HERO ── */
 .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:100px 24px 60px;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 100% 80% at 50% 100%,rgba(123,47,255,0.2) 0%,rgba(255,47,123,0.1) 40%,transparent 70%);}
+.pool-glow{position:absolute;bottom:-100px;left:50%;transform:translateX(-50%);width:600px;height:300px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,229,255,0.08),transparent 70%);animation:glow 4s ease-in-out infinite;}
+@keyframes glow{0%,100%{opacity:0.5;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}
 
-/* Fire background */
-.fire-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 120%,rgba(255,61,0,0.15) 0%,transparent 70%);}
-.fire-ring{position:absolute;border-radius:50%;border:1px solid rgba(255,61,0,0.08);animation:ringpulse 4s ease-in-out infinite;}
-.fire-ring:nth-child(1){width:300px;height:300px;bottom:-150px;left:50%;transform:translateX(-50%);}
-.fire-ring:nth-child(2){width:500px;height:500px;bottom:-250px;left:50%;transform:translateX(-50%);animation-delay:0.5s;}
-.fire-ring:nth-child(3){width:700px;height:700px;bottom:-350px;left:50%;transform:translateX(-50%);animation-delay:1s;}
-.fire-ring:nth-child(4){width:900px;height:900px;bottom:-450px;left:50%;transform:translateX(-50%);animation-delay:1.5s;}
-@keyframes ringpulse{0%,100%{opacity:0.3;transform:translateX(-50%) scale(1)}50%{opacity:0.8;transform:translateX(-50%) scale(1.02)}}
+.bubbles{position:absolute;inset:0;pointer-events:none;}
+.bubble{position:absolute;border-radius:50%;animation:bubblerise linear infinite;opacity:0;}
+@keyframes bubblerise{0%{transform:translateY(100vh) scale(1);opacity:0}10%{opacity:0.4}90%{opacity:0.1}100%{transform:translateY(-100px) scale(0.5);opacity:0}}
 
-/* Floating embers */
-.ember{position:absolute;border-radius:50%;animation:emberrise linear infinite;pointer-events:none;}
-@keyframes emberrise{0%{transform:translateY(100vh) translateX(0) scale(1);opacity:0}10%{opacity:1}80%{opacity:0.5}100%{transform:translateY(-200px) translateX(60px) scale(0.3);opacity:0}}
-
-.hero-content{position:relative;text-align:center;max-width:600px;z-index:2;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,61,0,0.08);border:1px solid rgba(255,61,0,0.2);border-radius:4px;padding:6px 14px;font-size:10px;font-weight:600;color:var(--fire2);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;font-family:'Space Mono',monospace;}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--fire);animation:blink 1.2s ease-in-out infinite;}
+.hero-content{position:relative;text-align:center;max-width:640px;z-index:2;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(123,47,255,0.1);border:1px solid rgba(123,47,255,0.25);border-radius:4px;padding:6px 14px;font-size:10px;font-weight:600;color:#a070ff;letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;font-family:'Space Mono',monospace;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--primary2);animation:blink 1.2s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
-.hero-title{font-family:'Syne',sans-serif;font-size:clamp(56px,10vw,96px);font-weight:800;line-height:0.9;letter-spacing:-3px;margin-bottom:8px;}
-.hero-title .line1{display:block;color:var(--text);}
-.hero-title .line2{display:block;background:linear-gradient(135deg,var(--fire) 0%,var(--ember) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero-title .line3{display:block;color:var(--text);font-weight:400;font-size:0.5em;letter-spacing:0;margin-top:8px;opacity:0.4;}
+.hero-organizer{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(48px,9vw,84px);font-weight:800;line-height:0.9;letter-spacing:-2px;margin-bottom:16px;}
+.hero-title .t1{display:block;background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.7) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-title .t2{display:block;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-title .t3{display:block;color:var(--text);font-size:0.55em;font-weight:400;letter-spacing:0;opacity:0.5;margin-top:6px;}
 
-.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:28px 0;}
+.hero-artists{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:20px 0;}
+.artist-tag{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--text-dim);font-family:'Space Mono',monospace;letter-spacing:1px;}
+
+.hero-meta{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px 0 24px;}
 .meta-item{font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;}
-.meta-sep{color:var(--text-faint);}
 
-.price-pill{display:inline-block;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:16px 32px;margin:8px 0 32px;}
-.price-pill-label{font-size:9px;color:var(--text-faint);letter-spacing:3px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:4px;}
-.price-pill-val{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;background:linear-gradient(135deg,var(--fire),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
-.price-pill-note{font-size:10px;color:var(--text-faint);margin-top:4px;font-family:'Space Mono',monospace;}
+/* Ticket tiers */
+.tiers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px 0 32px;}
+.tier{background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 20px;text-align:center;cursor:pointer;transition:all 0.2s;min-width:120px;}
+.tier.selected{border-color:var(--primary);background:rgba(123,47,255,0.1);}
+.tier-name{font-size:9px;color:var(--text-faint);letter-spacing:2px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:4px;}
+.tier-price{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tier-note{font-size:9px;color:var(--text-faint);margin-top:3px;font-family:'Space Mono',monospace;}
+.tier.selected .tier-name{color:var(--primary);}
 
-.cta{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--fire),var(--fire2));color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;padding:16px 36px;border-radius:8px;border:none;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s;box-shadow:0 8px 32px rgba(255,61,0,0.3);}
-.cta:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(255,61,0,0.4);}
-.cta-icon{font-size:16px;transition:transform 0.2s;}
+.cta{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;padding:16px 36px;border-radius:8px;border:none;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s;box-shadow:0 8px 32px rgba(123,47,255,0.3);}
+.cta:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(123,47,255,0.4);}
+.cta-icon{transition:transform 0.2s;}
 .cta:hover .cta-icon{transform:translateX(4px);}
 
-/* ── PURCHASE SECTION ── */
+/* ── PURCHASE ── */
 .purchase{max-width:520px;margin:0 auto;padding:60px 24px 80px;}
-.sec-tag{font-size:9px;color:var(--fire);letter-spacing:4px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:8px;}
-.sec-title{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:6px;}
-.sec-desc{font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:32px;}
+.sec-tag{font-size:9px;color:var(--primary);letter-spacing:4px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:8px;}
+.sec-title{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;letter-spacing:-1px;margin-bottom:6px;}
+.sec-desc{font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:28px;}
 
-/* Steps */
-.steps{display:flex;margin-bottom:28px;position:relative;}
-.steps::before{content:'';position:absolute;top:14px;left:14px;right:14px;height:1px;background:var(--border2);}
-.step-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
-.step-num{width:28px;height:28px;border-radius:6px;background:var(--surface2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-faint);transition:all 0.3s;z-index:1;font-family:'Space Mono',monospace;}
-.step-item.active .step-num{background:var(--fire);border-color:var(--fire);color:#fff;}
-.step-item.done .step-num{background:var(--green);border-color:var(--green);color:var(--bg);}
-.step-lbl{font-size:9px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;font-family:'Space Mono',monospace;}
-.step-item.active .step-lbl{color:var(--fire);}
+/* Selected tier display */
+.selected-tier-display{background:rgba(123,47,255,0.08);border:1px solid rgba(123,47,255,0.2);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.std-label{font-size:10px;color:var(--primary);font-family:'Space Mono',monospace;letter-spacing:1px;}
+.std-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.std-change{font-size:10px;color:var(--text-faint);cursor:pointer;font-family:'Space Mono',monospace;text-decoration:underline;}
+.std-change:hover{color:var(--primary);}
 
-/* Form */
-.fcard{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:24px;margin-bottom:12px;}
-.fcard-title{font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:18px;display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;}
-.fcard-num{width:18px;height:18px;border-radius:4px;background:linear-gradient(135deg,var(--fire),var(--fire2));color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.fcard{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:22px;margin-bottom:12px;}
+.fcard-title{font-size:10px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;}
+.fcard-num{width:18px;height:18px;border-radius:4px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;}
 .fg{margin-bottom:14px;}
-.fl{font-size:11px;color:var(--text-dim);margin-bottom:6px;display:block;letter-spacing:0.5px;font-family:'Space Mono',monospace;}
+.fl{font-size:10px;color:var(--text-dim);margin-bottom:6px;display:block;letter-spacing:0.5px;font-family:'Space Mono',monospace;}
 .fi{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
-.fi:focus{border-color:var(--fire);}
+.fi:focus{border-color:var(--primary);}
 .fi::placeholder{color:var(--text-faint);}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
 /* M-Pesa block */
 .mpesa{background:linear-gradient(135deg,rgba(0,230,118,0.04),rgba(0,230,118,0.02));border:1px solid rgba(0,230,118,0.15);border-radius:12px;padding:20px;margin-bottom:12px;}
-.mpesa-tag{font-size:9px;color:var(--green);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
-.mpesa-num{font-family:'Space Mono',monospace;font-size:24px;color:var(--green);letter-spacing:4px;margin:6px 0;}
+.mpesa-tag{font-size:9px;color:var(--green);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.mpesa-instruction{font-size:13px;color:rgba(0,230,118,0.7);line-height:1.7;margin-bottom:12px;font-family:'Space Mono',monospace;}
+.mpesa-instruction strong{color:var(--green);}
+.mpesa-num{font-family:'Space Mono',monospace;font-size:28px;color:var(--green);letter-spacing:4px;margin:8px 0 4px;}
 .mpesa-name{font-size:11px;color:rgba(0,230,118,0.5);font-family:'Space Mono',monospace;}
-.mpesa-amt{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--text);margin:10px 0 6px;}
-.mpesa-steps{margin-top:12px;display:flex;flex-direction:column;gap:5px;}
-.ms{font-size:11px;color:rgba(0,230,118,0.5);display:flex;gap:8px;font-family:'Space Mono',monospace;}
-.ms-n{color:var(--green);flex-shrink:0;}
+.mpesa-amt{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:var(--text);margin:10px 0 4px;}
+.mpesa-amt-note{font-size:10px;color:rgba(0,230,118,0.4);font-family:'Space Mono',monospace;}
+.mpesa-steps{margin-top:14px;display:flex;flex-direction:column;gap:6px;padding-top:14px;border-top:1px solid rgba(0,230,118,0.1);}
+.ms{font-size:11px;color:rgba(0,230,118,0.5);display:flex;gap:8px;font-family:'Space Mono',monospace;align-items:flex-start;}
+.ms-n{color:var(--green);flex-shrink:0;font-weight:700;}
 
-.submit{width:100%;padding:15px;border-radius:10px;background:linear-gradient(135deg,var(--fire),var(--fire2));color:#fff;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;}
-.submit:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,61,0,0.35);}
+/* Phone verification note */
+.verify-note{background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:10px;padding:14px 16px;margin-bottom:12px;font-size:12px;color:rgba(0,229,255,0.7);line-height:1.6;font-family:'Space Mono',monospace;}
+.verify-note strong{color:var(--accent);}
+
+.submit{width:100%;padding:15px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;}
+.submit:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(123,47,255,0.4);}
 .submit:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
 
-/* Success ticket */
+/* Tier selector in form */
+.tier-select{display:flex;gap:8px;margin-bottom:4px;}
+.tier-opt{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.tier-opt.active{border-color:var(--primary);background:rgba(123,47,255,0.08);}
+.tier-opt-name{font-size:9px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:3px;}
+.tier-opt-price{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text-dim);}
+.tier-opt.active .tier-opt-price{background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tier-opt.active .tier-opt-name{color:var(--primary);}
+
+/* Success */
 .success-view{display:none;padding:40px 24px 80px;max-width:520px;margin:0 auto;}
-.success-head{text-align:center;margin-bottom:28px;}
-.success-icon{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--fire),var(--fire2));display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;animation:popIn 0.5s ease;}
+.success-head{text-align:center;margin-bottom:24px;}
+.success-icon{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px;animation:popIn 0.5s ease;}
 @keyframes popIn{0%{transform:scale(0) rotate(-10deg);opacity:0}70%{transform:scale(1.1) rotate(2deg)}100%{transform:scale(1) rotate(0);opacity:1}}
-.success-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
+.success-title{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
 .success-sub{font-size:13px;color:var(--text-dim);}
 
-/* The actual ticket */
+/* Ticket */
 .ticket{background:var(--surface);border:1px solid var(--border2);border-radius:16px;overflow:hidden;margin-bottom:16px;position:relative;}
-.ticket-header{background:linear-gradient(135deg,#0e0408 0%,#180810 50%,#0e0408 100%);padding:24px 24px 0;position:relative;overflow:hidden;}
-.ticket-fire{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,var(--surface),transparent);}
-.ticket-glow1{position:absolute;top:-40px;right:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(255,61,0,0.3),transparent 70%);}
-.ticket-glow2{position:absolute;top:-20px;right:20px;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,157,0,0.2),transparent 70%);}
-.ticket-brand{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;color:var(--fire);text-transform:uppercase;margin-bottom:6px;}
-.ticket-event{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--text);line-height:0.9;letter-spacing:-1px;}
-.ticket-sub{font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-top:6px;margin-bottom:20px;font-family:'Space Mono',monospace;}
+.ticket-header{padding:22px 22px 0;position:relative;overflow:hidden;background:linear-gradient(135deg,#0e0820 0%,#180830 50%,#200820 100%);}
+.ticket-glow1{position:absolute;top:-40px;right:-20px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(123,47,255,0.4),transparent 70%);}
+.ticket-glow2{position:absolute;top:-20px;left:-20px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,47,123,0.2),transparent 70%);}
+.ticket-fire{position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(to top,var(--surface),transparent);}
+.ticket-brand{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:4px;color:rgba(160,112,255,0.6);text-transform:uppercase;margin-bottom:6px;}
+.ticket-org{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:4px;}
+.ticket-event{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--text);line-height:0.9;letter-spacing:-1px;}
+.ticket-event span{background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ticket-sub{font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-top:6px;margin-bottom:18px;font-family:'Space Mono',monospace;}
+.ticket-skyline{display:flex;align-items:flex-end;gap:2px;height:28px;opacity:0.15;}
+.sk{background:linear-gradient(to top,var(--primary),var(--primary2));border-radius:1px 1px 0 0;}
 
-/* Skyline */
-.ticket-skyline{display:flex;align-items:flex-end;gap:2px;height:32px;opacity:0.15;}
-.sk{background:linear-gradient(to top,var(--fire),var(--fire2));border-radius:1px 1px 0 0;}
-
-/* Perf */
 .perf{display:flex;align-items:center;margin:0 -1px;}
-.perf-c{width:18px;height:18px;border-radius:50%;background:var(--bg);flex-shrink:0;border:1px solid var(--bg);}
+.perf-c{width:16px;height:16px;border-radius:50%;background:var(--bg);flex-shrink:0;}
 .perf-l{flex:1;border-top:1.5px dashed var(--border2);}
 
-.ticket-body{padding:16px 24px;}
-.ticket-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
-.tg-item{}
+.ticket-body{padding:14px 22px;}
+.ticket-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .tg-label{font-size:8px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.5px;font-family:'Space Mono',monospace;margin-bottom:3px;}
-.tg-val{font-size:13px;color:var(--text);font-weight:500;}
-.tg-val.fire{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--fire),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tg-val{font-size:12px;color:var(--text);font-weight:500;}
+.tg-val.hl{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
-.ticket-bottom{padding:16px 24px 20px;display:flex;gap:16px;align-items:center;border-top:1px solid var(--border);}
-.ticket-qr{background:#fff;padding:6px;border-radius:8px;flex-shrink:0;}
+.ticket-bottom{padding:14px 22px 20px;display:flex;gap:14px;align-items:center;border-top:1px solid var(--border);}
+.ticket-qr{background:#fff;padding:5px;border-radius:8px;flex-shrink:0;}
 .ticket-code-block{flex:1;}
 .tc-label{font-size:8px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.5px;font-family:'Space Mono',monospace;margin-bottom:4px;}
-.tc-code{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--ember);letter-spacing:3px;}
-.tc-name{font-size:14px;color:var(--text);font-weight:500;margin-top:4px;}
-.tc-type{font-size:11px;color:var(--text-dim);margin-top:2px;font-family:'Space Mono',monospace;}
+.tc-code{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:#a070ff;letter-spacing:3px;}
+.tc-name{font-size:13px;color:var(--text);font-weight:500;margin-top:4px;}
+.tc-type{font-size:10px;color:var(--text-dim);margin-top:2px;font-family:'Space Mono',monospace;}
 
-/* Verified stamp */
-.verified-stamp{position:absolute;top:50%;right:20px;transform:translateY(-50%) rotate(12deg);border:2px solid rgba(0,230,118,0.2);border-radius:8px;padding:6px 10px;text-align:center;pointer-events:none;}
-.vs-text{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;color:rgba(0,230,118,0.2);letter-spacing:2px;text-transform:uppercase;line-height:1.3;}
+.verified-stamp{position:absolute;bottom:20px;right:18px;border:1.5px solid rgba(123,47,255,0.15);border-radius:6px;padding:5px 8px;text-align:center;}
+.vs-text{font-family:'Syne',sans-serif;font-size:8px;font-weight:800;color:rgba(123,47,255,0.2);letter-spacing:2px;text-transform:uppercase;line-height:1.3;}
 
-.success-note{background:rgba(255,61,0,0.06);border:1px solid rgba(255,61,0,0.15);border-radius:10px;padding:14px 16px;font-size:12px;color:rgba(255,109,0,0.8);line-height:1.6;text-align:center;font-family:'Space Mono',monospace;}
+.success-note{background:rgba(123,47,255,0.06);border:1px solid rgba(123,47,255,0.15);border-radius:10px;padding:14px 16px;font-size:12px;color:rgba(160,112,255,0.8);line-height:1.6;text-align:center;font-family:'Space Mono',monospace;}
 
-/* ══════════════════
-   ORGANIZER DASH
-══════════════════ */
-.dash{padding:28px;max-width:960px;margin:0 auto;}
-.dash-header{margin-bottom:24px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.dash-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1px;}
-.dash-title span{background:linear-gradient(135deg,var(--fire),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.dash-sub{font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:4px;}
+/* ── DASHBOARD ── */
+.dash{padding:24px;max-width:960px;margin:0 auto;}
+.dash-title{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
+.dash-title span{background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.dash-sub{font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;margin-bottom:20px;}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
 .stat{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:16px;}
 .stat-l{font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.5px;font-family:'Space Mono',monospace;margin-bottom:6px;}
-.stat-v{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;line-height:1;}
-.sv-fire{background:linear-gradient(135deg,var(--fire),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.sv-green{color:var(--green);}
-.sv-dim{color:var(--text);}
+.stat-v{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;line-height:1;}
+.sv-p{background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sv-g{color:var(--green);}
+.sv-d{color:var(--text);}
 
-/* Door Check-in */
-.checkin-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:20px;}
+.revenue-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.rev-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:16px;}
+.rev-label{font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.5px;font-family:'Space Mono',monospace;margin-bottom:6px;}
+.rev-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+.card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:18px;margin-bottom:16px;}
 .card-title{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;font-family:'Space Mono',monospace;margin-bottom:14px;}
+
 .ci-row{display:flex;gap:10px;}
-.ci-input{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;color:var(--text);font-family:'Space Mono',monospace;font-size:18px;letter-spacing:4px;text-transform:uppercase;outline:none;}
-.ci-input:focus{border-color:var(--fire);}
-.ci-btn{padding:12px 24px;border-radius:8px;background:linear-gradient(135deg,var(--fire),var(--fire2));color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;border:none;cursor:pointer;white-space:nowrap;}
-.ci-result{margin-top:12px;border-radius:8px;padding:12px 16px;font-size:13px;display:none;font-family:'Space Mono',monospace;}
+.ci-input{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;color:var(--text);font-family:'Space Mono',monospace;font-size:16px;letter-spacing:3px;text-transform:uppercase;outline:none;}
+.ci-input:focus{border-color:var(--primary);}
+.ci-btn{padding:12px 20px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;border:none;cursor:pointer;}
+.ci-result{margin-top:10px;border-radius:8px;padding:12px 16px;font-size:12px;display:none;font-family:'Space Mono',monospace;}
 .ci-ok{background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);color:var(--green);}
 .ci-err{background:rgba(255,23,68,0.08);border:1px solid rgba(255,23,68,0.2);color:var(--red);}
-.ci-warn{background:rgba(255,109,0,0.08);border:1px solid rgba(255,109,0,0.2);color:var(--fire2);}
+.ci-warn{background:rgba(123,47,255,0.08);border:1px solid rgba(123,47,255,0.2);color:#a070ff;}
 
-/* Table */
-.table-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:20px;}
-.table-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
-.filter-tabs{display:flex;gap:4px;}
-.ftab{padding:5px 12px;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid var(--border2);color:var(--text-dim);background:transparent;transition:all 0.15s;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
-.ftab.on{background:var(--fire);color:#fff;border-color:var(--fire);}
-.search{width:100%;background:var(--bg);border:none;border-bottom:1px solid var(--border);padding:12px 20px;color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:13px;outline:none;}
+.pending-banner{background:rgba(255,47,123,0.06);border:1px solid rgba(255,47,123,0.15);border-radius:10px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+.pb-text{font-size:13px;color:rgba(255,47,123,0.8);}
+.pb-count{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--primary2);}
+
+.table-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.table-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;}
+.filter-tabs{display:flex;gap:4px;flex-wrap:wrap;}
+.ftab{padding:5px 10px;border-radius:6px;font-size:9px;font-weight:600;cursor:pointer;border:1px solid var(--border2);color:var(--text-dim);background:transparent;transition:all 0.15s;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
+.ftab.on{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border-color:transparent;}
+.search{width:100%;background:var(--bg);border:none;border-bottom:1px solid var(--border);padding:10px 18px;color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:13px;outline:none;}
 .search::placeholder{color:var(--text-faint);}
 .table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12px;min-width:640px;}
-th{text-align:left;font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.5px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface2);font-family:'Space Mono',monospace;}
-td{padding:11px 16px;border-bottom:1px solid var(--border);color:var(--text-dim);vertical-align:middle;}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:680px;}
+th{text-align:left;font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.5px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2);font-family:'Space Mono',monospace;}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-dim);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
-tr:hover td{background:rgba(255,61,0,0.02);}
-.empty-state{text-align:center;padding:40px;color:var(--text-faint);font-size:12px;font-family:'Space Mono',monospace;}
+tr:hover td{background:rgba(123,47,255,0.02);}
+.empty-state{text-align:center;padding:36px;color:var(--text-faint);font-size:12px;font-family:'Space Mono',monospace;}
 
-.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;font-family:'Space Mono',monospace;}
+.badge{display:inline-flex;align-items:center;padding:3px 7px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:0.5px;font-family:'Space Mono',monospace;}
 .b-confirmed{background:rgba(0,230,118,0.1);color:var(--green);}
-.b-pending{background:rgba(255,109,0,0.1);color:var(--fire2);}
-.b-checkedin{background:rgba(100,100,255,0.1);color:#8888ff;}
+.b-pending{background:rgba(255,47,123,0.1);color:var(--primary2);}
+.b-checkedin{background:rgba(0,229,255,0.1);color:var(--accent);}
 
 .act-btn{padding:5px 10px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;font-family:'Space Mono',monospace;}
-.ab-confirm{background:linear-gradient(135deg,var(--fire),var(--fire2));color:#fff;}
-.ab-wa{background:rgba(0,230,118,0.12);color:var(--green);border:1px solid rgba(0,230,118,0.2);}
+.ab-confirm{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;}
+.ab-wa{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.2);}
 .ab-view{background:var(--surface2);color:var(--text-dim);border:1px solid var(--border2);}
 
-/* Pending banner */
-.pending-banner{background:rgba(255,61,0,0.06);border:1px solid rgba(255,61,0,0.15);border-radius:10px;padding:14px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
-.pb-text{font-size:13px;color:rgba(255,109,0,0.8);}
-.pb-count{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--fire);}
-
-/* Revenue */
-.revenue-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;}
-.rc-label{font-size:9px;color:var(--text-faint);letter-spacing:2px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:4px;}
-.rc-val{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;background:linear-gradient(135deg,var(--fire),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.rc-note{font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:2px;}
-
-/* Settings */
-.settings-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:20px;}
-
-/* ── MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+/* Modals */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:24px;max-width:400px;width:100%;position:relative;animation:slideUp 0.3s ease;}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal-close{position:absolute;top:14px;right:14px;background:var(--surface2);border:none;color:var(--text-dim);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;}
-.modal-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
-.modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.modal-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;font-family:'Space Mono',monospace;margin-bottom:14px;}
+.modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
 .modal-actions .act-btn{padding:11px;font-size:11px;text-align:center;border-radius:8px;}
 
-/* Password modal */
 .pw-modal{text-align:center;}
-.pw-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
-.pw-title span{background:linear-gradient(135deg,var(--fire),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.pw-sub{font-size:12px;color:var(--text-dim);margin-bottom:20px;font-family:'Space Mono',monospace;}
+.pw-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
+.pw-title span{background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.pw-sub{font-size:11px;color:var(--text-dim);margin-bottom:18px;font-family:'Space Mono',monospace;}
 .pw-error{font-size:11px;color:var(--red);margin-bottom:8px;display:none;font-family:'Space Mono',monospace;}
 
 @media(max-width:600px){
   .stats{grid-template-columns:1fr 1fr;}
+  .revenue-row{grid-template-columns:1fr;}
   .fr{grid-template-columns:1fr;}
-  .nav{padding:14px 16px;}
-  .nav-tab{padding:7px 12px;font-size:11px;}
-  .hero-title{font-size:52px;}
+  .nav{padding:12px 16px;}
+  .nav-tab{padding:7px 10px;font-size:11px;}
+  .hero-title{font-size:44px;}
+  .tiers{flex-direction:column;align-items:center;}
+  .tier{width:100%;max-width:280px;}
   .dash{padding:16px;}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">IGNITE<span>Event Ticketing</span></div>
   <div class="nav-tabs">
@@ -280,33 +277,47 @@ tr:hover td{background:rgba(255,61,0,0.02);}
   </div>
 </nav>
 
-<!-- ══ BUYER VIEW ══ -->
+<!-- BUYER VIEW -->
 <div class="view active" id="view-buyer">
   <div class="hero">
-    <div class="fire-bg"></div>
-    <div class="fire-ring"></div><div class="fire-ring"></div><div class="fire-ring"></div><div class="fire-ring"></div>
-    <div id="embers"></div>
+    <div class="hero-bg"></div>
+    <div class="pool-glow"></div>
+    <div class="bubbles" id="bubbles"></div>
     <div class="hero-content">
-      <div class="hero-eyebrow"><div class="live-dot"></div>1st May 2026 · Nairobi, Kenya</div>
+      <div class="hero-eyebrow"><div class="live-dot"></div>Saturday 27 June · Ruai, Nairobi</div>
+      <div class="hero-organizer">Vibe Hause Presents</div>
       <div class="hero-title">
-        <span class="line1">GOLDEN</span>
-        <span class="line2">HOUR GROOVE</span>
-        <span class="line3">Rooftop Experience · Prod Muuo</span>
+        <span class="t1">SUN & SOUL</span>
+        <span class="t2">POOL PARTY</span>
+        <span class="t3">Bunker Hill Residence · Doors Open 3PM</span>
+      </div>
+      <div class="hero-artists">
+        <span class="artist-tag">DJ LLJ</span>
+        <span class="artist-tag">DJ RAVE</span>
+        <span class="artist-tag">DJ PRINCESS</span>
       </div>
       <div class="hero-meta">
-        <span class="meta-item">📍 Tsavo Royal Suburbs Ph.2</span>
-        <span class="meta-sep">·</span>
-        <span class="meta-item">🕓 From 4:00 PM</span>
-        <span class="meta-sep">·</span>
-        <span class="meta-item">🎧 Prod Muuo</span>
+        <span class="meta-item">📍 Bunker Hill Residence, Ruai</span>
+        <span class="meta-item">🕒 3PM to Late</span>
       </div>
-      <div class="price-pill">
-        <div class="price-pill-label">General Admission</div>
-        <div class="price-pill-val">KES 500</div>
-        <div class="price-pill-note">Flat rate · All inclusive</div>
+      <div class="tiers">
+        <div class="tier selected" onclick="selectTier('Early Bird',1000,this)">
+          <div class="tier-name">Early Bird</div>
+          <div class="tier-price">KES 1,000</div>
+          <div class="tier-note">Limited slots</div>
+        </div>
+        <div class="tier" onclick="selectTier('Late',1500,this)">
+          <div class="tier-name">Late Ticket</div>
+          <div class="tier-price">KES 1,500</div>
+          <div class="tier-note">Standard</div>
+        </div>
+        <div class="tier" onclick="selectTier('Door',2000,this)">
+          <div class="tier-name">Door Ticket</div>
+          <div class="tier-price">KES 2,000</div>
+          <div class="tier-note">At the gate</div>
+        </div>
       </div>
-      <br>
-      <button class="cta" onclick="scrollToBuy()">Secure Your Spot <span class="cta-icon">→</span></button>
+      <button class="cta" onclick="scrollToBuy()">Get My Ticket <span class="cta-icon">→</span></button>
     </div>
   </div>
 
@@ -315,24 +326,30 @@ tr:hover td{background:rgba(255,61,0,0.02);}
     <div id="form-section">
       <div class="sec-tag">Secure Your Spot</div>
       <div class="sec-title">Get Your Ticket</div>
-      <div class="sec-desc">Fill your details, send KES 500 via M-Pesa, submit your reference. Your ticket is generated instantly.</div>
+      <div class="sec-desc">Fill your details, send payment via M-Pesa using your phone number as reference, then submit below.</div>
 
-      <div class="steps">
-        <div class="step-item active" id="step1"><div class="step-num">01</div><div class="step-lbl">Details</div></div>
-        <div class="step-item" id="step2"><div class="step-num">02</div><div class="step-lbl">Pay</div></div>
-        <div class="step-item" id="step3"><div class="step-num">03</div><div class="step-lbl">Confirm</div></div>
+      <div class="selected-tier-display">
+        <div>
+          <div class="std-label">Selected Tier</div>
+          <div class="std-val" id="sel-tier-name">Early Bird</div>
+        </div>
+        <div style="text-align:right">
+          <div class="std-label">Amount to Pay</div>
+          <div class="std-val" id="sel-tier-price">KES 1,000</div>
+          <div class="std-change" onclick="scrollToTop()">Change ↑</div>
+        </div>
       </div>
 
       <div class="fcard">
         <div class="fcard-title"><div class="fcard-num">1</div>Your Details</div>
         <div class="fg">
           <label class="fl">Full Name</label>
-          <input class="fi" id="b-name" type="text" placeholder="Enter your full name" oninput="liveSteps()">
+          <input class="fi" id="b-name" type="text" placeholder="Enter your full name" oninput="liveValidate()">
         </div>
         <div class="fr">
           <div class="fg">
             <label class="fl">Phone Number</label>
-            <input class="fi" id="b-phone" type="tel" placeholder="07XX XXX XXX" oninput="liveSteps()">
+            <input class="fi" id="b-phone" type="tel" placeholder="07XX XXX XXX" oninput="liveValidate()">
           </div>
           <div class="fg">
             <label class="fl">Email (optional)</label>
@@ -344,58 +361,69 @@ tr:hover td{background:rgba(255,61,0,0.02);}
       <div class="mpesa">
         <div class="mpesa-tag">
           <svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#00e676"/><path d="M3.5 6l2 2 3-3" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Step 02 — Send M-Pesa Payment
+          Step 2 — Send M-Pesa Payment
+        </div>
+        <div class="mpesa-instruction">
+          Send to: <strong>+254 110421666</strong><br>
+          Use your <strong>phone number</strong> as the account reference<br>
+          This is how we verify your payment
         </div>
         <div style="font-size:9px;color:rgba(0,230,118,0.4);letter-spacing:2px;font-family:'Space Mono',monospace">SEND TO</div>
-        <div class="mpesa-num">0742145611</div>
-        <div class="mpesa-name">Athman Hassan</div>
+        <div class="mpesa-num">0110421666</div>
         <div style="font-size:9px;color:rgba(0,230,118,0.4);letter-spacing:2px;font-family:'Space Mono',monospace;margin-top:10px">EXACT AMOUNT</div>
-        <div class="mpesa-amt">KES 500</div>
+        <div class="mpesa-amt" id="mpesa-amount-display">KES 1,000</div>
+        <div class="mpesa-amt-note" id="mpesa-tier-display">Early Bird Ticket</div>
         <div class="mpesa-steps">
           <div class="ms"><span class="ms-n">①</span>Go to M-Pesa → Send Money</div>
-          <div class="ms"><span class="ms-n">②</span>Enter number above and KES 500</div>
-          <div class="ms"><span class="ms-n">③</span>Copy the reference from your SMS</div>
+          <div class="ms"><span class="ms-n">②</span>Enter <strong style="color:var(--green)">0110421666</strong> as recipient</div>
+          <div class="ms"><span class="ms-n">③</span>Enter the exact amount shown above</div>
+          <div class="ms"><span class="ms-n">④</span>Your phone number is your receipt — no reference code needed</div>
         </div>
+      </div>
+
+      <div class="verify-note">
+        🔒 <strong>How we verify:</strong> We match your phone number against our M-Pesa records. Make sure you send from the same number you entered above. No screenshots or reference codes needed.
       </div>
 
       <div class="fcard">
-        <div class="fcard-title"><div class="fcard-num">3</div>Confirm Payment</div>
+        <div class="fcard-title"><div class="fcard-num">3</div>Confirm Submission</div>
         <div class="fg">
-          <label class="fl">M-Pesa Reference Code</label>
-          <input class="fi" id="b-ref" type="text" placeholder="e.g. QHJ3K1A2P" style="font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase" oninput="this.value=this.value.toUpperCase();liveSteps()">
-          <div style="font-size:10px;color:var(--text-faint);margin-top:6px;font-family:'Space Mono',monospace">Found in your M-Pesa confirmation SMS</div>
+          <label class="fl">Confirm Your Phone Number</label>
+          <input class="fi" id="b-phone-confirm" type="tel" placeholder="Re-enter your phone number" oninput="liveValidate()">
+          <div style="font-size:10px;color:var(--text-faint);margin-top:6px;font-family:'Space Mono',monospace">Must match the number you sent from</div>
         </div>
       </div>
 
-      <button class="submit" id="submit-btn" onclick="doSubmit()" disabled>Generate My Ticket →</button>
+      <button class="submit" id="submit-btn" onclick="doSubmit()" disabled>Submit Request →</button>
     </div>
 
     <!-- SUCCESS -->
     <div class="success-view" id="success-view">
       <div class="success-head">
         <div class="success-icon">🎟️</div>
-        <div class="success-title">Ticket Ready</div>
-        <div class="success-sub">Screenshot this and show it at the entrance</div>
+        <div class="success-title">Request Submitted!</div>
+        <div class="success-sub">We'll verify your payment and confirm your ticket shortly</div>
       </div>
 
-      <div class="ticket" id="the-ticket">
+      <div class="ticket" id="the-ticket" style="display:none">
         <div class="ticket-header">
           <div class="ticket-glow1"></div><div class="ticket-glow2"></div>
           <div class="ticket-brand">Ignite Tickets</div>
-          <div class="ticket-event">GOLDEN<br>HOUR GROOVE</div>
-          <div class="ticket-sub">Rooftop Experience</div>
+          <div class="ticket-org">Vibe Hause</div>
+          <div class="ticket-event">SUN & SOUL <span>POOL PARTY</span></div>
+          <div class="ticket-sub">Bunker Hill Residence · Ruai</div>
           <div class="ticket-skyline" id="buyer-skyline"></div>
           <div class="ticket-fire"></div>
         </div>
-        <div style="background:var(--surface);padding:0 24px;">
+        <div style="background:var(--surface);padding:0 22px">
           <div class="perf"><div class="perf-c"></div><div class="perf-l"></div><div class="perf-c"></div></div>
-          <div class="ticket-body" style="padding:16px 0;">
+          <div class="ticket-body" style="padding:14px 0">
             <div class="ticket-grid">
-              <div class="tg-item"><div class="tg-label">Date</div><div class="tg-val">1 May 2026</div></div>
-              <div class="tg-item"><div class="tg-label">Time</div><div class="tg-val">From 4:00 PM</div></div>
-              <div class="tg-item" style="grid-column:1/-1"><div class="tg-label">Venue</div><div class="tg-val">Tsavo Royal Suburbs Ph.2 · Rooftop Hall</div></div>
-              <div class="tg-item"><div class="tg-label">Artist</div><div class="tg-val">Prod Muuo</div></div>
-              <div class="tg-item"><div class="tg-label">Price</div><div class="tg-val fire">KES 500</div></div>
+              <div><div class="tg-label">Date</div><div class="tg-val">Sat 27 June 2026</div></div>
+              <div><div class="tg-label">Time</div><div class="tg-val">3PM to Late</div></div>
+              <div style="grid-column:1/-1"><div class="tg-label">Venue</div><div class="tg-val">Bunker Hill Residence, Ruai</div></div>
+              <div><div class="tg-label">Artists</div><div class="tg-val">DJ LLJ · DJ Rave · DJ Princess</div></div>
+              <div><div class="tg-label">Ticket Type</div><div class="tg-val hl" id="t-tier">Early Bird</div></div>
             </div>
           </div>
           <div class="perf"><div class="perf-c"></div><div class="perf-l"></div><div class="perf-c"></div></div>
@@ -406,47 +434,57 @@ tr:hover td{background:rgba(255,61,0,0.02);}
             <div class="tc-label">Ticket Code</div>
             <div class="tc-code" id="t-code">IGN-???</div>
             <div class="tc-name" id="t-name">—</div>
-            <div class="tc-type">General Admission · KES 500</div>
+            <div class="tc-type" id="t-type">Early Bird · KES 1,000</div>
           </div>
           <div class="verified-stamp"><div class="vs-text">IGNITE<br>VERIFIED</div></div>
         </div>
       </div>
 
-      <div class="success-note">📸 Screenshot this ticket. Show the QR code or ticket code at the entrance on 1st May 2026.</div>
+      <!-- Pending state -->
+      <div id="pending-state" style="background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:16px;">
+        <div style="font-size:10px;color:var(--text-faint);font-family:'Space Mono',monospace;letter-spacing:1px;margin-bottom:6px">BOOKING REFERENCE</div>
+        <div style="font-family:'Space Mono',monospace;font-size:20px;color:#a070ff;letter-spacing:3px" id="t-booking">—</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:10px;font-family:'Space Mono',monospace" id="t-pending-name">—</div>
+        <div style="font-size:11px;color:var(--text-faint);margin-top:4px;font-family:'Space Mono',monospace" id="t-pending-phone">—</div>
+      </div>
+
+      <div class="success-note">⏳ The organizer will verify your M-Pesa payment and send your ticket to your WhatsApp. Keep your booking reference above.</div>
     </div>
   </div>
 </div>
 
-<!-- ══ ORGANIZER VIEW ══ -->
+<!-- ORGANIZER VIEW -->
 <div class="view" id="view-dash">
   <div class="dash">
-    <div class="dash-header">
-      <div>
-        <div class="dash-title">Organizer <span>Dashboard</span></div>
-        <div class="dash-sub">Golden Hour Groove · 1 May 2026</div>
+    <div class="dash-title">Organizer <span>Dashboard</span></div>
+    <div class="dash-sub">Sun & Soul Pool Party · Sat 27 June 2026</div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-l">Total</div><div class="stat-v sv-p" id="d-total">0</div></div>
+      <div class="stat"><div class="stat-l">Confirmed</div><div class="stat-v sv-g" id="d-confirmed">0</div></div>
+      <div class="stat"><div class="stat-l">Pending</div><div class="stat-v sv-p" id="d-pending">0</div></div>
+      <div class="stat"><div class="stat-l">At Door</div><div class="stat-v sv-d" id="d-checkedin">0</div></div>
+    </div>
+
+    <div class="revenue-row">
+      <div class="rev-card"><div class="rev-label">Total Revenue</div><div class="rev-val" id="d-revenue">KES 0</div></div>
+      <div class="rev-card">
+        <div class="rev-label">Breakdown</div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;font-family:'Space Mono',monospace"><span style="color:var(--text-dim)">Early Bird</span><span style="color:var(--text)" id="d-eb">0 × KES 1,000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;font-family:'Space Mono',monospace"><span style="color:var(--text-dim)">Late</span><span style="color:var(--text)" id="d-late">0 × KES 1,500</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;font-family:'Space Mono',monospace"><span style="color:var(--text-dim)">Door</span><span style="color:var(--text)" id="d-door">0 × KES 2,000</span></div>
+        </div>
       </div>
     </div>
 
-    <div class="stats">
-      <div class="stat"><div class="stat-l">Total</div><div class="stat-v sv-fire" id="d-total">0</div></div>
-      <div class="stat"><div class="stat-l">Confirmed</div><div class="stat-v sv-green" id="d-confirmed">0</div></div>
-      <div class="stat"><div class="stat-l">Pending</div><div class="stat-v sv-fire" id="d-pending">0</div></div>
-      <div class="stat"><div class="stat-l">Checked In</div><div class="stat-v sv-dim" id="d-checkedin">0</div></div>
-    </div>
-
-    <div class="revenue-card">
-      <div><div class="rc-label">Total Revenue</div><div class="rc-val" id="d-revenue">KES 0</div><div class="rc-note">From confirmed tickets</div></div>
-      <div style="text-align:right"><div class="rc-label">Per Ticket</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text-dim)">KES 500</div></div>
-    </div>
-
     <div class="pending-banner" id="pending-banner" style="display:none">
-      <div class="pb-text">🔔 <span class="pb-count" id="pb-num">0</span> pending requests waiting for confirmation</div>
-      <button class="ftab on" onclick="setFilter('pending',event)">Review Now</button>
+      <div class="pb-text">🔔 <span class="pb-count" id="pb-num">0</span> pending — verify M-Pesa and confirm</div>
+      <button class="ftab on" onclick="setFilter('pending',event)">Review</button>
     </div>
 
-    <!-- Door check-in -->
-    <div class="checkin-card">
-      <div class="card-title">Door Check-In — Scan or Type Code</div>
+    <div class="card">
+      <div class="card-title">Door Check-In</div>
       <div class="ci-row">
         <input class="ci-input" id="ci-code" placeholder="IGN-001" oninput="this.value=this.value.toUpperCase()">
         <button class="ci-btn" onclick="doCheckin()">Verify ✓</button>
@@ -454,7 +492,6 @@ tr:hover td{background:rgba(255,61,0,0.02);}
       <div class="ci-result" id="ci-result"></div>
     </div>
 
-    <!-- Attendees table -->
     <div class="table-card">
       <div class="table-head">
         <div class="card-title" style="margin:0">Attendees</div>
@@ -468,18 +505,9 @@ tr:hover td{background:rgba(255,61,0,0.02);}
       <input class="search" id="search" type="text" placeholder="Search name, phone or code..." oninput="renderTable()">
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Code</th><th>Name</th><th>Phone</th><th>M-Pesa Ref</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody id="att-tbody"><tr><td colspan="6" class="empty-state">No attendees yet — share the link!</td></tr></tbody>
+          <thead><tr><th>Code</th><th>Name</th><th>Phone</th><th>Tier</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="att-tbody"><tr><td colspan="6" class="empty-state">No attendees yet</td></tr></tbody>
         </table>
-      </div>
-    </div>
-
-    <!-- Settings -->
-    <div class="settings-card">
-      <div class="card-title">M-Pesa Settings</div>
-      <div class="fr" style="max-width:420px">
-        <div class="fg"><label class="fl">M-Pesa Number</label><input class="fi" id="set-mpesa" type="tel" value="0742145611" oninput="updateMpesa()"></div>
-        <div class="fg"><label class="fl">Account Name</label><input class="fi" id="set-name" type="text" value="Athman Hassan" oninput="updateMpesa()"></div>
       </div>
     </div>
   </div>
@@ -490,8 +518,8 @@ tr:hover td{background:rgba(255,61,0,0.02);}
   <div class="modal pw-modal">
     <div class="pw-title">IGNITE <span>Access</span></div>
     <div class="pw-sub">Enter organizer password</div>
-    <div class="pw-error" id="pw-error">Incorrect password. Try again.</div>
-    <input class="fi" id="pw-input" type="password" placeholder="••••••••••" style="text-align:center;font-size:18px;letter-spacing:4px;margin-bottom:12px" onkeydown="if(event.key==='Enter')checkPw()">
+    <div class="pw-error" id="pw-error">Incorrect password</div>
+    <input class="fi" id="pw-input" type="password" placeholder="••••••••" style="text-align:center;font-size:18px;letter-spacing:4px;margin-bottom:12px" onkeydown="if(event.key==='Enter')checkPw()">
     <button class="submit" onclick="checkPw()">Enter Dashboard</button>
   </div>
 </div>
@@ -500,40 +528,40 @@ tr:hover td{background:rgba(255,61,0,0.02);}
 <div class="modal-overlay" id="ticket-modal" onclick="closeTicketModal(event)">
   <div class="modal">
     <button class="modal-close" onclick="document.getElementById('ticket-modal').classList.remove('open')">✕</button>
-    <div class="modal-title">Generated Ticket</div>
-    <div class="ticket" style="font-size:0.85em">
-      <div class="ticket-header" style="padding:18px 18px 0">
+    <div class="modal-label">Confirmed Ticket — Send via WhatsApp</div>
+    <div class="ticket" style="font-size:0.88em">
+      <div class="ticket-header" style="padding:16px 16px 0">
         <div class="ticket-glow1"></div>
-        <div class="ticket-brand" style="font-size:9px">Ignite Tickets</div>
-        <div class="ticket-event" style="font-size:28px">GOLDEN<br>HOUR GROOVE</div>
-        <div class="ticket-sub">Rooftop Experience</div>
-        <div class="ticket-skyline" id="modal-skyline" style="height:24px"></div>
+        <div class="ticket-brand" style="font-size:8px">Ignite Tickets</div>
+        <div class="ticket-org" style="font-size:9px">Vibe Hause</div>
+        <div class="ticket-event" style="font-size:24px">SUN & SOUL <span>POOL PARTY</span></div>
+        <div class="ticket-sub">Bunker Hill Residence · Ruai</div>
+        <div class="ticket-skyline" id="modal-skyline" style="height:20px"></div>
         <div class="ticket-fire"></div>
       </div>
-      <div style="background:var(--surface);padding:0 18px">
+      <div style="background:var(--surface);padding:0 16px">
         <div class="perf"><div class="perf-c"></div><div class="perf-l"></div><div class="perf-c"></div></div>
-        <div style="padding:12px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div><div class="tg-label">Date</div><div class="tg-val" style="font-size:12px">1 May 2026</div></div>
-          <div><div class="tg-label">Time</div><div class="tg-val" style="font-size:12px">From 4:00 PM</div></div>
-          <div style="grid-column:1/-1"><div class="tg-label">Venue</div><div class="tg-val" style="font-size:12px">Tsavo Royal Suburbs Ph.2 · Rooftop</div></div>
-          <div><div class="tg-label">Price</div><div class="tg-val fire" style="font-size:16px">KES 500</div></div>
+        <div style="padding:10px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><div class="tg-label">Date</div><div class="tg-val" style="font-size:11px">Sat 27 June 2026</div></div>
+          <div><div class="tg-label">Time</div><div class="tg-val" style="font-size:11px">3PM to Late</div></div>
+          <div><div class="tg-label">Tier</div><div class="tg-val hl" style="font-size:14px" id="modal-tier">—</div></div>
         </div>
         <div class="perf"><div class="perf-c"></div><div class="perf-l"></div><div class="perf-c"></div></div>
       </div>
-      <div class="ticket-bottom" style="padding:12px 18px 16px">
+      <div class="ticket-bottom" style="padding:10px 16px 14px">
         <div class="ticket-qr"><div id="modal-qr"></div></div>
         <div class="ticket-code-block">
           <div class="tc-label">Ticket Code</div>
-          <div class="tc-code" id="modal-code" style="font-size:18px">IGN-???</div>
+          <div class="tc-code" id="modal-code" style="font-size:16px">IGN-???</div>
           <div class="tc-name" id="modal-name" style="font-size:12px">—</div>
-          <div class="tc-type">General Admission</div>
+          <div class="tc-type" id="modal-type">Early Bird</div>
         </div>
       </div>
     </div>
     <div class="modal-actions">
       <button class="act-btn ab-wa" style="padding:11px;font-size:11px;border-radius:8px" onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
       <button class="act-btn ab-view" style="padding:11px;font-size:11px;border-radius:8px" onclick="copyCode()">Copy Code</button>
-      <button class="act-btn" style="padding:11px;font-size:11px;border-radius:8px;background:rgba(100,100,255,0.1);color:#8888ff;border:1px solid rgba(100,100,255,0.2)" onclick="modalCheckin()">Mark Checked In</button>
+      <button class="act-btn" style="padding:11px;font-size:11px;border-radius:8px;background:rgba(0,229,255,0.08);color:var(--accent);border:1px solid rgba(0,229,255,0.15)" onclick="modalCheckin()">Mark Checked In</button>
     </div>
   </div>
 </div>
@@ -564,20 +592,20 @@ async function getNextNum() {
   return next;
 }
 
-window.fbSubmit = async function(name, phone, email, refcode) {
+window.fbSubmit = async function(name, phone, email, tier, amount) {
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
-  btn.textContent = 'Generating...';
+  btn.textContent = 'Submitting...';
   try {
     const num = await getNextNum();
-    const code = 'IGN-' + num.toString().padStart(3, '0');
-    const record = { code, name, phone, email, ref: refcode, status: 'confirmed', checkedin: false, timestamp: Date.now(), amount: 500 };
+    const booking = 'BKG-' + num.toString().padStart(4, '0');
+    const record = { booking, code: null, name, phone, email, tier, amount, status: 'pending', checkedin: false, timestamp: Date.now() };
     await push(ref(db, 'attendees'), record);
-    window.showBuyerTicket(code, name);
+    window.showPending(booking, name, phone, tier, amount);
   } catch(e) {
     console.error(e);
     btn.disabled = false;
-    btn.textContent = 'Generate My Ticket →';
+    btn.textContent = 'Submit Request →';
     alert('Connection error. Check your internet and try again.');
   }
 };
@@ -592,47 +620,64 @@ window.fbListen = function(cb) {
   });
 };
 
-window.fbConfirm = (key, code) => update(ref(db, 'attendees/' + key), { status: 'confirmed', code });
+window.fbConfirm = async function(fbKey) {
+  const num = await getNextNum();
+  const code = 'IGN-' + num.toString().padStart(3, '0');
+  await update(ref(db, 'attendees/' + fbKey), { status: 'confirmed', code });
+  return code;
+};
+
 window.fbCheckin = (key) => update(ref(db, 'attendees/' + key), { status: 'checkedin', checkedin: true });
 window.fbReady = true;
 if (window.onFbReady) window.onFbReady();
 </script>
 
 <script>
-// ── State ──
 let attendees = [];
 let currentFilter = 'all';
 let activeCode = null;
 let activeAttendee = null;
 let orgUnlocked = false;
 let orgNavEl = null;
+let selectedTier = 'Early Bird';
+let selectedAmount = 1000;
 
-// ── Build visual elements ──
-(function buildEmbers() {
-  const el = document.getElementById('embers');
-  for (let i = 0; i < 25; i++) {
-    const e = document.createElement('div');
-    e.className = 'ember';
-    const size = 2 + Math.random() * 3;
-    e.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${Math.random()>0.5?'#FF3D00':'#FF9E00'};animation-duration:${7+Math.random()*12}s;animation-delay:${Math.random()*12}s`;
-    el.appendChild(e);
+// Build bubbles
+(function() {
+  const el = document.getElementById('bubbles');
+  const colors = ['rgba(123,47,255,0.3)','rgba(255,47,123,0.3)','rgba(0,229,255,0.2)'];
+  for (let i = 0; i < 20; i++) {
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = 4 + Math.random() * 8;
+    b.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*3)]};animation-duration:${8+Math.random()*14}s;animation-delay:${Math.random()*14}s`;
+    el.appendChild(b);
   }
 })();
 
 function buildSkyline(elId) {
   const el = document.getElementById(elId);
   if (!el || el.hasChildNodes()) return;
-  const heights = [24,14,30,10,20,16,28,8,18,14,26,10,20,8,24,12,18,28,10,22];
-  const widths  = [12,6,8,5,10,7,9,5,8,6,10,5,8,5,10,6,8,9,5,9];
-  heights.forEach((h, i) => {
+  [22,12,28,8,18,14,24,8,16,12,22,8,18,6,20,10,16,26,8,20].forEach((h, i) => {
     const d = document.createElement('div');
     d.className = 'sk';
-    d.style.cssText = `height:${h}px;width:${widths[i]||6}px`;
+    d.style.cssText = `height:${h}px;width:${[10,6,8,5,8,6,8,5,8,5,8,5,7,4,8,6,7,8,5,8][i]||6}px`;
     el.appendChild(d);
   });
 }
 
-// ── Nav ──
+function selectTier(name, amount, el) {
+  selectedTier = name;
+  selectedAmount = amount;
+  document.querySelectorAll('.tier').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('sel-tier-name').textContent = name + ' Ticket';
+  document.getElementById('sel-tier-price').textContent = 'KES ' + amount.toLocaleString();
+  document.getElementById('mpesa-amount-display').textContent = 'KES ' + amount.toLocaleString();
+  document.getElementById('mpesa-tier-display').textContent = name + ' Ticket';
+}
+window.selectTier = selectTier;
+
 function switchView(v, el) {
   document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(x => x.classList.remove('active'));
@@ -666,56 +711,50 @@ window.checkPw = checkPw;
 
 function closePwModal(e) { if (e.target === document.getElementById('pw-modal')) document.getElementById('pw-modal').classList.remove('open'); }
 window.closePwModal = closePwModal;
+function closeTicketModal(e) { if (e.target === document.getElementById('ticket-modal')) document.getElementById('ticket-modal').classList.remove('open'); }
+window.closeTicketModal = closeTicketModal;
 
-// ── Buyer form ──
 function scrollToBuy() { document.getElementById('buy-section').scrollIntoView({ behavior: 'smooth' }); }
 window.scrollToBuy = scrollToBuy;
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+window.scrollToTop = scrollToTop;
 
-function liveSteps() {
+function liveValidate() {
   const n = document.getElementById('b-name').value.trim();
   const p = document.getElementById('b-phone').value.trim();
-  const r = document.getElementById('b-ref').value.trim();
-  document.getElementById('step1').className = 'step-item' + (n && p ? ' done' : ' active');
-  document.getElementById('step2').className = 'step-item' + (n && p ? ' active' : '');
-  document.getElementById('step3').className = 'step-item' + (r ? ' done active' : '');
-  document.getElementById('submit-btn').disabled = !(n && p && r);
+  const pc = document.getElementById('b-phone-confirm').value.trim();
+  document.getElementById('submit-btn').disabled = !(n && p && pc && p === pc);
 }
-window.liveSteps = liveSteps;
+window.liveValidate = liveValidate;
 
 function doSubmit() {
   const name = document.getElementById('b-name').value.trim();
   const phone = document.getElementById('b-phone').value.trim();
   const email = document.getElementById('b-email').value.trim();
-  const refcode = document.getElementById('b-ref').value.trim();
-  if (!name || !phone || !refcode) return;
+  const pc = document.getElementById('b-phone-confirm').value.trim();
+  if (!name || !phone || !pc || phone !== pc) { alert('Phone numbers do not match'); return; }
   if (window.fbReady) {
-    window.fbSubmit(name, phone, email, refcode);
+    window.fbSubmit(name, phone, email, selectedTier, selectedAmount);
   } else {
-    window.onFbReady = () => window.fbSubmit(name, phone, email, refcode);
+    window.onFbReady = () => window.fbSubmit(name, phone, email, selectedTier, selectedAmount);
   }
 }
 window.doSubmit = doSubmit;
 
-window.showBuyerTicket = function(code, name) {
-  buildSkyline('buyer-skyline');
-  document.getElementById('t-code').textContent = code;
-  document.getElementById('t-name').textContent = name;
-  const qrEl = document.getElementById('buyer-qr');
-  qrEl.innerHTML = '';
-  new QRCode(qrEl, { text: `IGNITE|${code}|${name}|500|GHG`, width: 72, height: 72, colorDark: '#060608', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+window.showPending = function(booking, name, phone, tier, amount) {
+  document.getElementById('t-booking').textContent = booking;
+  document.getElementById('t-pending-name').textContent = name;
+  document.getElementById('t-pending-phone').textContent = phone + ' · ' + tier + ' · KES ' + amount.toLocaleString();
   document.getElementById('form-section').style.display = 'none';
   document.getElementById('success-view').style.display = 'block';
-  ['b-name','b-phone','b-email','b-ref'].forEach(id => document.getElementById(id).value = '');
+  ['b-name','b-phone','b-email','b-phone-confirm'].forEach(id => document.getElementById(id).value = '');
 };
 
-// ── Dashboard ──
 function startDashboard() {
   if (window.fbReady) {
     window.fbListen(list => { attendees = list; updateStats(); renderTable(); });
   } else {
-    window.onFbReady = () => {
-      window.fbListen(list => { attendees = list; updateStats(); renderTable(); });
-    };
+    window.onFbReady = () => window.fbListen(list => { attendees = list; updateStats(); renderTable(); });
   }
 }
 
@@ -724,23 +763,24 @@ function updateStats() {
   const confirmed = attendees.filter(a => a.status === 'confirmed' || a.status === 'checkedin').length;
   const pending = attendees.filter(a => a.status === 'pending').length;
   const ci = attendees.filter(a => a.checkedin).length;
-  const revenue = confirmed * 500;
+  const revenue = attendees.filter(a => a.status !== 'pending').reduce((s, a) => s + (a.amount || 0), 0);
+  const eb = attendees.filter(a => a.tier === 'Early Bird' && a.status !== 'pending').length;
+  const late = attendees.filter(a => a.tier === 'Late' && a.status !== 'pending').length;
+  const door = attendees.filter(a => a.tier === 'Door' && a.status !== 'pending').length;
+
   document.getElementById('d-total').textContent = total;
   document.getElementById('d-confirmed').textContent = confirmed;
   document.getElementById('d-pending').textContent = pending;
   document.getElementById('d-checkedin').textContent = ci;
   document.getElementById('d-revenue').textContent = 'KES ' + revenue.toLocaleString();
+  document.getElementById('d-eb').textContent = eb + ' × KES 1,000';
+  document.getElementById('d-late').textContent = late + ' × KES 1,500';
+  document.getElementById('d-door').textContent = door + ' × KES 2,000';
+
   const badge = document.getElementById('pending-badge');
   const banner = document.getElementById('pending-banner');
-  if (pending > 0) {
-    badge.style.display = 'inline';
-    badge.textContent = pending;
-    banner.style.display = 'flex';
-    document.getElementById('pb-num').textContent = pending;
-  } else {
-    badge.style.display = 'none';
-    banner.style.display = 'none';
-  }
+  if (pending > 0) { badge.style.display='inline'; badge.textContent=pending; banner.style.display='flex'; document.getElementById('pb-num').textContent=pending; }
+  else { badge.style.display='none'; banner.style.display='none'; }
 }
 
 function setFilter(f, e) {
@@ -757,41 +797,27 @@ function renderTable() {
   if (currentFilter === 'pending') list = list.filter(a => a.status === 'pending');
   if (currentFilter === 'confirmed') list = list.filter(a => a.status === 'confirmed');
   if (currentFilter === 'checkedin') list = list.filter(a => a.checkedin);
-  if (q) list = list.filter(a => (a.name||'').toLowerCase().includes(q) || (a.phone||'').includes(q) || (a.code||'').toLowerCase().includes(q));
+  if (q) list = list.filter(a => (a.name||'').toLowerCase().includes(q)||(a.phone||'').includes(q)||(a.code||'').toLowerCase().includes(q));
   const tbody = document.getElementById('att-tbody');
-  if (!list.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No results</td></tr>'; return; }
+  if (!list.length) { tbody.innerHTML='<tr><td colspan="6" class="empty-state">No results</td></tr>'; return; }
   tbody.innerHTML = list.map(a => {
-    const sb = a.checkedin
-      ? '<span class="badge b-checkedin">✓ IN</span>'
-      : a.status === 'confirmed'
-        ? '<span class="badge b-confirmed">● CONFIRMED</span>'
-        : '<span class="badge b-pending">⏳ PENDING</span>';
-    const code = a.code
-      ? `<span style="font-family:'Space Mono',monospace;color:var(--ember);font-size:11px">${a.code}</span>`
-      : `<span style="color:var(--text-faint);font-size:10px">—</span>`;
-    const actions = a.status === 'pending'
+    const sb = a.checkedin ? '<span class="badge b-checkedin">✓ IN</span>' : a.status==='confirmed' ? '<span class="badge b-confirmed">CONFIRMED</span>' : '<span class="badge b-pending">PENDING</span>';
+    const code = a.code ? `<span style="font-family:'Space Mono',monospace;color:#a070ff;font-size:11px">${a.code}</span>` : `<span style="color:var(--text-faint);font-size:10px">${a.booking||'—'}</span>`;
+    const tierBadge = `<span style="font-size:10px;font-family:'Space Mono',monospace;color:var(--text-dim)">${a.tier||'—'}<br>KES ${(a.amount||0).toLocaleString()}</span>`;
+    const actions = a.status==='pending'
       ? `<button class="act-btn ab-confirm" onclick="confirmAttendee('${a.fbKey}')">Confirm</button>`
       : a.checkedin
-        ? '<span style="font-size:10px;color:var(--text-faint);font-family:Space Mono,monospace">DONE</span>'
-        : `<div style="display:flex;gap:4px"><button class="act-btn ab-wa" onclick="openTicket('${a.code}')">View</button><button class="act-btn ab-view" onclick="quickWa('${a.fbKey}')" style="background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.2)">WhatsApp</button></div>`;
-    return `<tr>
-      <td>${code}</td>
-      <td style="color:var(--text);font-weight:500">${a.name||'—'}</td>
-      <td style="font-family:'Space Mono',monospace;font-size:11px">${a.phone||'—'}</td>
-      <td style="font-family:'Space Mono',monospace;font-size:11px">${a.ref||'—'}</td>
-      <td>${sb}</td>
-      <td>${actions}</td>
-    </tr>`;
+        ? '<span style="font-size:9px;color:var(--text-faint);font-family:Space Mono,monospace">DONE</span>'
+        : `<div style="display:flex;gap:4px"><button class="act-btn ab-view" onclick="openTicket('${a.code}')">View</button><button class="act-btn ab-wa" onclick="quickWa('${a.fbKey}')">WA</button></div>`;
+    return `<tr><td>${code}</td><td style="color:var(--text);font-weight:500">${a.name||'—'}</td><td style="font-family:'Space Mono',monospace;font-size:11px">${a.phone||'—'}</td><td>${tierBadge}</td><td>${sb}</td><td>${actions}</td></tr>`;
   }).join('');
 }
 window.renderTable = renderTable;
 
 function confirmAttendee(fbKey) {
-  const a = attendees.find(x => x.fbKey === fbKey);
-  if (!a) return;
-  const num = attendees.filter(x => x.code).length + 1;
-  const code = 'IGN-' + num.toString().padStart(3, '0');
-  if (window.fbConfirm) window.fbConfirm(fbKey, code).then(() => openTicket(code));
+  if (window.fbConfirm) {
+    window.fbConfirm(fbKey).then(code => openTicket(code));
+  }
 }
 window.confirmAttendee = confirmAttendee;
 
@@ -803,21 +829,20 @@ function openTicket(code) {
   buildSkyline('modal-skyline');
   document.getElementById('modal-code').textContent = code;
   document.getElementById('modal-name').textContent = a.name;
+  document.getElementById('modal-tier').textContent = (a.tier || '—') + ' · KES ' + (a.amount||0).toLocaleString();
+  document.getElementById('modal-type').textContent = (a.tier||'') + ' · KES ' + (a.amount||0).toLocaleString();
   const qrEl = document.getElementById('modal-qr');
   qrEl.innerHTML = '';
-  new QRCode(qrEl, { text: `IGNITE|${code}|${a.name}|500|GHG`, width: 68, height: 68, colorDark: '#060608', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+  new QRCode(qrEl, { text: `IGNITE|${code}|${a.name}|${a.amount}|SUNSOIL`, width: 66, height: 66, colorDark: '#060608', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
   document.getElementById('ticket-modal').classList.add('open');
 }
 window.openTicket = openTicket;
 
-function closeTicketModal(e) { if (e.target === document.getElementById('ticket-modal')) document.getElementById('ticket-modal').classList.remove('open'); }
-window.closeTicketModal = closeTicketModal;
-
 function sendWhatsApp() {
   const a = activeAttendee;
   if (!a) return;
-  const phone = (a.phone || '').replace(/\s+/g, '').replace(/^0/, '254');
-  const msg = encodeURIComponent(`Hey ${a.name} 🔥\n\nYour ticket for *Golden Hour Groove* is confirmed!\n\n📅 1st May 2026\n📍 Tsavo Royal Suburbs Phase 2 Rooftop\n🕓 From 4:00 PM\n🎧 Prod Muuo\n\n🎟 Ticket Code: *${a.code}*\n\nShow this code at the entrance. See you there! 🔥\n\n— Ignite Tickets`);
+  const phone = (a.phone||'').replace(/\s+/g,'').replace(/^0/,'254');
+  const msg = encodeURIComponent(`Hey ${a.name} 🎉\n\nYour ticket for *Sun & Soul Pool Party* is confirmed!\n\n📅 Saturday 27 June 2026\n📍 Bunker Hill Residence, Ruai\n🕒 3PM to Late\n🎧 DJ LLJ | DJ Rave | DJ Princess\n\n🎟 Ticket Code: *${a.code}*\n🏷 ${a.tier} Ticket · KES ${(a.amount||0).toLocaleString()}\n\nShow this code at the gate. See you there! 🏊‍♂️🔥\n\n— Ignite Tickets | Vibe Hause`);
   window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
 }
 window.sendWhatsApp = sendWhatsApp;
@@ -832,7 +857,7 @@ function quickWa(fbKey) {
 window.quickWa = quickWa;
 
 function copyCode() {
-  navigator.clipboard.writeText(activeCode || '').then(() => alert(activeCode + ' copied!'));
+  navigator.clipboard.writeText(activeCode||'').then(() => alert(activeCode + ' copied!'));
 }
 window.copyCode = copyCode;
 
@@ -843,7 +868,6 @@ function modalCheckin() {
 }
 window.modalCheckin = modalCheckin;
 
-// Door check-in
 function doCheckin() {
   const code = document.getElementById('ci-code').value.trim().toUpperCase();
   const res = document.getElementById('ci-result');
@@ -851,20 +875,15 @@ function doCheckin() {
   res.className = 'ci-result';
   if (!code) { res.innerHTML = 'Enter a ticket code'; res.classList.add('ci-warn'); return; }
   const a = attendees.find(x => x.code === code);
-  if (!a) { res.innerHTML = '✗ Code not found — not a valid ticket'; res.classList.add('ci-err'); return; }
-  if (a.checkedin) { res.innerHTML = `⚠ Already checked in — ${a.name}`; res.classList.add('ci-warn'); return; }
+  if (!a) { res.innerHTML = '✗ Invalid ticket — not found in system'; res.classList.add('ci-err'); return; }
+  if (a.checkedin) { res.innerHTML = `⚠ Already checked in — ${a.name} (${a.tier})`; res.classList.add('ci-warn'); return; }
   if (window.fbCheckin) window.fbCheckin(a.fbKey);
-  res.innerHTML = `✓ Welcome, <strong>${a.name}</strong> — General Admission`;
+  res.innerHTML = `✓ Welcome <strong>${a.name}</strong> — ${a.tier} Ticket`;
   res.classList.add('ci-ok');
   document.getElementById('ci-code').value = '';
 }
 window.doCheckin = doCheckin;
 document.getElementById('ci-code').addEventListener('keydown', e => { if (e.key === 'Enter') doCheckin(); });
-
-function updateMpesa() {
-  // M-Pesa number is hardcoded — settings just for display
-}
-window.updateMpesa = updateMpesa;
 </script>
 </body>
 </html>
