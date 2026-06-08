@@ -6,6 +6,7 @@
 <title>Ignite — Sun & Soul Pool Party</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
 <style>
 :root {
   --primary: #7B2FFF;
@@ -254,6 +255,21 @@ tr:hover td{background:rgba(123,47,255,0.02);}
 .pw-sub{font-size:11px;color:var(--text-dim);margin-bottom:18px;font-family:'Space Mono',monospace;}
 .pw-error{font-size:11px;color:var(--red);margin-bottom:8px;display:none;font-family:'Space Mono',monospace;}
 
+/* QR Scanner */
+.scanner-wrap{position:relative;width:100%;max-width:320px;margin:12px auto 0;border-radius:12px;overflow:hidden;display:none;background:#000;border:1px solid var(--border2);}
+.scanner-video{width:100%;display:block;border-radius:12px;}
+.scanner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.scanner-frame{width:180px;height:180px;border:2px solid var(--primary);border-radius:12px;position:relative;}
+.scanner-frame::before,.scanner-frame::after{content:'';position:absolute;width:30px;height:30px;border-color:var(--primary2);border-style:solid;}
+.scanner-frame::before{top:-2px;left:-2px;border-width:3px 0 0 3px;border-radius:12px 0 0 0;}
+.scanner-frame::after{bottom:-2px;right:-2px;border-width:0 3px 3px 0;border-radius:0 0 12px 0;}
+.scanner-line{position:absolute;left:10px;right:10px;height:2px;background:linear-gradient(90deg,transparent,var(--primary),transparent);animation:scanline 2s ease-in-out infinite;}
+@keyframes scanline{0%{top:10px;opacity:1}50%{opacity:1}100%{top:calc(100% - 12px);opacity:0.3}}
+.scan-btn{width:100%;padding:11px;border-radius:8px;background:rgba(123,47,255,0.1);color:var(--primary);border:1px solid rgba(123,47,255,0.25);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;margin-top:10px;transition:all 0.2s;}
+.scan-btn:hover{background:rgba(123,47,255,0.2);}
+.scan-btn.scanning{background:rgba(255,47,123,0.1);color:var(--primary2);border-color:rgba(255,47,123,0.25);}
+.scan-status{font-size:11px;color:var(--text-faint);text-align:center;margin-top:8px;font-family:'Space Mono',monospace;}
+
 @media(max-width:600px){
   .stats{grid-template-columns:1fr 1fr;}
   .revenue-row{grid-template-columns:1fr;}
@@ -489,6 +505,16 @@ tr:hover td{background:rgba(123,47,255,0.02);}
         <input class="ci-input" id="ci-code" placeholder="IGN-001" oninput="this.value=this.value.toUpperCase()">
         <button class="ci-btn" onclick="doCheckin()">Verify ✓</button>
       </div>
+      <button class="scan-btn" id="scan-btn" onclick="toggleScanner()">📷 Scan QR Code</button>
+      <div class="scanner-wrap" id="scanner-wrap">
+        <video class="scanner-video" id="scanner-video" autoplay muted playsinline></video>
+        <div class="scanner-overlay">
+          <div class="scanner-frame">
+            <div class="scanner-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="scan-status" id="scan-status"></div>
       <div class="ci-result" id="ci-result"></div>
     </div>
 
@@ -884,6 +910,82 @@ function doCheckin() {
 }
 window.doCheckin = doCheckin;
 document.getElementById('ci-code').addEventListener('keydown', e => { if (e.key === 'Enter') doCheckin(); });
+
+// ── QR Scanner ──
+let scannerActive = false;
+let codeReader = null;
+let scannerStream = null;
+
+function toggleScanner() {
+  if (scannerActive) {
+    stopScanner();
+  } else {
+    startScanner();
+  }
+}
+window.toggleScanner = toggleScanner;
+
+function startScanner() {
+  const wrap = document.getElementById('scanner-wrap');
+  const btn = document.getElementById('scan-btn');
+  const status = document.getElementById('scan-status');
+
+  if (!window.ZXing) {
+    status.textContent = 'Scanner library not loaded. Try refreshing.';
+    return;
+  }
+
+  wrap.style.display = 'block';
+  btn.textContent = '⏹ Stop Scanner';
+  btn.classList.add('scanning');
+  status.textContent = 'Point camera at the QR code on the ticket...';
+  scannerActive = true;
+
+  const hints = new Map();
+  const formats = [window.ZXing.BarcodeFormat.QR_CODE];
+  hints.set(window.ZXing.DecodeHintType.POSSIBLE_FORMATS, formats);
+
+  codeReader = new window.ZXing.BrowserQRCodeReader();
+
+  codeReader.listVideoInputDevices().then(devices => {
+    const backCamera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('rear') || d.label.toLowerCase().includes('environment'));
+    const deviceId = backCamera ? backCamera.deviceId : (devices[devices.length - 1]?.deviceId);
+
+    codeReader.decodeFromVideoDevice(deviceId, 'scanner-video', (result, err) => {
+      if (result) {
+        const text = result.getText();
+        // Parse IGNITE|IGN-001|Name|Amount|Event
+        const parts = text.split('|');
+        if (parts[0] === 'IGNITE' && parts[1]) {
+          const code = parts[1];
+          document.getElementById('ci-code').value = code;
+          status.textContent = '✓ QR scanned: ' + code;
+          stopScanner();
+          setTimeout(() => doCheckin(), 300);
+        } else {
+          status.textContent = '⚠ Invalid QR — not an Ignite ticket';
+        }
+      }
+    });
+  }).catch(err => {
+    status.textContent = 'Camera access denied. Please allow camera permissions.';
+    stopScanner();
+  });
+}
+
+function stopScanner() {
+  const wrap = document.getElementById('scanner-wrap');
+  const btn = document.getElementById('scan-btn');
+  wrap.style.display = 'none';
+  btn.textContent = '📷 Scan QR Code';
+  btn.classList.remove('scanning');
+  scannerActive = false;
+  if (codeReader) {
+    try { codeReader.reset(); } catch(e) {}
+    codeReader = null;
+  }
+}
+window.stopScanner = stopScanner;
 </script>
 </body>
 </html>
